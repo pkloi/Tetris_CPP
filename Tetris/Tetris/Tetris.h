@@ -1,4 +1,10 @@
 #pragma once
+#include <graphics.h>
+#include <vector>
+
+#include "Block.h"
+
+using namespace std;
 
 //游戏类
 class Tetris
@@ -24,5 +30,22 @@ private:
 private:
 	int m_nDelay;//刷新时间
 	bool m_bUpdate;//是否刷新游戏界面
+
+	//0：空白，没有任何方块
+	//5：表示第5种俄罗斯方块（一共七种）
+	vector<vector<int>> m_mapData;//存游戏数据
+	
+	int m_nRows;//行
+	int m_nCols;//列
+
+	int m_nLeftMargin;
+	int m_nTopMargin;
+
+	int m_nBlockSize;//俄罗斯方块的大小
+
+	IMAGE m_imgBg;//背景图片
+
+	Block* m_pCurrBlock;//当前方块
+	Block* m_pNextBlock;//预告方块
 };
 
