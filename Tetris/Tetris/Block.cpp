@@ -21,7 +21,7 @@ Block::Block()
 			getimage(m_imgs[i],i*m_nImgSize,0,m_nImgSize,m_nImgSize);
 		}
 		SetWorkingImage();//恢复工作区
-			
+
 	}
 	int blocks[7][4]={
 		1,3,5,7,//I
@@ -55,17 +55,30 @@ Block::~Block()
 
 void Block::drop()
 {
-
+	//往下掉落，只改变行
+	for(int i=0;i<4;i++)
+	{
+		m_PointBlocks[i].row++;
+	}
 }
 
 void Block::moveLeftRight(int offset)
 {
-
+	for(int i=0;i<4;i++)
+	{
+		m_PointBlocks[i].col+=offset;
+	}
 }
 
 void Block::rotate()
 {
-
+	Point p=m_PointBlocks[1];
+	for(int i=0;i<4;i++)
+	{
+		Point tmp=m_PointBlocks[i];
+		m_PointBlocks[i].row=p.row+tmp.col-p.col;
+		m_PointBlocks[i].col=p.col-tmp.row+p.row;
+	}
 }
 
 void Block::draw(int leftMargin,int topMargin)
@@ -81,4 +94,52 @@ void Block::draw(int leftMargin,int topMargin)
 IMAGE** Block::getImages()
 {
 	return m_imgs;
+}
+
+bool Block::blockInMap(const vector<vector<int>>& map)
+{
+	int nRows=map.size();
+	int nCols=map[0].size();
+
+	for(int i=0;i<4;i++)
+	{
+		if(m_PointBlocks[i].col<0 || m_PointBlocks[i].col>=nCols || //列超出范围
+			m_PointBlocks[i].row<0 || m_PointBlocks[i].row>=nRows || //行超出范围
+			map[m_PointBlocks[i].row][m_PointBlocks[i].col] != 0) //当前位置已经有方块（有方块时，值不为0)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void Block::solidify(vector<vector<int>>& map)
+{
+	for(int i=0;i<4;i++)
+	{
+		//设置标记，“固化”对应位置
+		int nCurRow=m_PointBlocks[i].row;
+		int nCurCol=m_PointBlocks[i].col;
+		map[nCurRow][nCurCol]=m_nBlockType;
+	}
+}
+
+int Block::getBlockType()
+{
+	return m_nBlockType;
+}
+
+Block& Block::operator=(const Block& other)
+{
+	if(this==&other)
+		return *this;
+
+	this->m_nBlockType=other.m_nBlockType;
+
+	for(int i=0;i<4;i++)
+	{
+		this->m_PointBlocks[i]=other.m_PointBlocks[i];
+	}
+
+	return *this;
 }

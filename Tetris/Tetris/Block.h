@@ -1,5 +1,8 @@
 #pragma once
 #include <graphics.h>		// 引用图形库头文件
+#include <vector>
+
+using namespace std;
 
 //位置结构体，记录方块的的位置
 struct Point{
@@ -22,6 +25,15 @@ public:
 	//int a[3] =>获取 int* getdata();
 	//int* a[3] =>获取 int** getdata();
 	static IMAGE** getImages();
+
+	Block& operator=(const Block& other);
+
+	//判断方块是否在地图内
+	bool blockInMap(const vector<vector<int>>&map);
+
+	//固化方块，使方块不再下落
+	void solidify(vector<vector<int>>&map);
+	int getBlockType();
 
 private:
 	int m_nBlockType;//方块类型
