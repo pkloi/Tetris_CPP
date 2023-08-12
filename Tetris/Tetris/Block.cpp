@@ -1,42 +1,42 @@
 #include "Block.h"
 #include <stdlib.h>
 
-IMAGE* Block::m_imgs[7]={NULL,};//ÉèÖÃÕû¸öÊı×éÎª¿Õ(ÓĞµÄ±àÒëÆ÷¿ÉÒÔ²»Ğ´¡®,¡¯)
+IMAGE* Block::m_imgs[7]={NULL,};//è®¾ç½®æ•´ä¸ªæ•°ç»„ä¸ºç©º(æœ‰çš„ç¼–è¯‘å™¨å¯ä»¥ä¸å†™â€˜,â€™)
 int Block::m_nImgSize=36;
 
 
 Block::Block()
 {
-	//³õÊ¼»¯·½¿éÍ¼Æ¬
+	//åˆå§‹åŒ–æ–¹å—å›¾ç‰‡
 	if(m_imgs[0]==NULL)
 	{
 		IMAGE imgTmp;
 		loadimage(&imgTmp,"res/tiles.png");
 
-		//Í¨¹ıÇĞ¸îÍ¼Æ¬µÃµ½²»Í¬µÄĞ¡·½¿é
+		//é€šè¿‡åˆ‡å‰²å›¾ç‰‡å¾—åˆ°ä¸åŒçš„å°æ–¹å—
 		SetWorkingImage(&imgTmp);
 		for(int i=0;i<7;i++)
 		{
 			m_imgs[i]=new IMAGE;
 			getimage(m_imgs[i],i*m_nImgSize,0,m_nImgSize,m_nImgSize);
 		}
-		SetWorkingImage();//»Ö¸´¹¤×÷Çø
+		SetWorkingImage();//æ¢å¤å·¥ä½œåŒº
 
 	}
 	int blocks[7][4]={
 		1,3,5,7,//I
-		2,4,5,7,//Z 1ĞÍ
-		3,5,4,6,//Z 2ĞÍ
+		2,4,5,7,//Z 1å‹
+		3,5,4,6,//Z 2å‹
 		3,5,4,7,//T
 		2,3,5,7,//L
 		3,5,7,6,//J
-		2,3,4,5,//Ìï
+		2,3,4,5,//ç”°
 	};
 
-	//Ëæ»úÉú³ÉÒ»ÖÖ¶íÂŞË¹·½¿é
+	//éšæœºç”Ÿæˆä¸€ç§ä¿„ç½—æ–¯æ–¹å—
 	m_nBlockType=1+rand()%7;//1+ 0...6 => 0...7
 
-	//³õÊ¼»¯ m_PointBlocks
+	//åˆå§‹åŒ– m_PointBlocks
 	for(int i=0;i<4;i++)
 	{
 		int nValue=blocks[m_nBlockType-1][i];
@@ -44,7 +44,7 @@ Block::Block()
 		m_PointBlocks[i].col=nValue%2;
 	}
 
-	//µ±Ç°·½¿é
+	//å½“å‰æ–¹å—
 	m_img=m_imgs[m_nBlockType-1];
 }
 
@@ -55,7 +55,7 @@ Block::~Block()
 
 void Block::drop()
 {
-	//ÍùÏÂµôÂä£¬Ö»¸Ä±äĞĞ
+	//å¾€ä¸‹æ‰è½ï¼Œåªæ”¹å˜è¡Œ
 	for(int i=0;i<4;i++)
 	{
 		m_PointBlocks[i].row++;
@@ -103,9 +103,9 @@ bool Block::blockInMap(const vector<vector<int>>& map)
 
 	for(int i=0;i<4;i++)
 	{
-		if(m_PointBlocks[i].col<0 || m_PointBlocks[i].col>=nCols || //ÁĞ³¬³ö·¶Î§
-			m_PointBlocks[i].row<0 || m_PointBlocks[i].row>=nRows || //ĞĞ³¬³ö·¶Î§
-			map[m_PointBlocks[i].row][m_PointBlocks[i].col] != 0) //µ±Ç°Î»ÖÃÒÑ¾­ÓĞ·½¿é£¨ÓĞ·½¿éÊ±£¬Öµ²»Îª0)
+		if(m_PointBlocks[i].col<0 || m_PointBlocks[i].col>=nCols || //åˆ—è¶…å‡ºèŒƒå›´
+			m_PointBlocks[i].row<0 || m_PointBlocks[i].row>=nRows || //è¡Œè¶…å‡ºèŒƒå›´
+			map[m_PointBlocks[i].row][m_PointBlocks[i].col] != 0) //å½“å‰ä½ç½®å·²ç»æœ‰æ–¹å—ï¼ˆæœ‰æ–¹å—æ—¶ï¼Œå€¼ä¸ä¸º0)
 		{
 			return false;
 		}
@@ -117,7 +117,7 @@ void Block::solidify(vector<vector<int>>& map)
 {
 	for(int i=0;i<4;i++)
 	{
-		//ÉèÖÃ±ê¼Ç£¬¡°¹Ì»¯¡±¶ÔÓ¦Î»ÖÃ
+		//è®¾ç½®æ ‡è®°ï¼Œâ€œå›ºåŒ–â€å¯¹åº”ä½ç½®
 		int nCurRow=m_PointBlocks[i].row;
 		int nCurCol=m_PointBlocks[i].col;
 		map[nCurRow][nCurCol]=m_nBlockType;

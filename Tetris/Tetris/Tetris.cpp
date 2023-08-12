@@ -1,7 +1,7 @@
 #include "Tetris.h"
 #include <stdlib.h>
 #include <time.h>
-#include <conio.h> //Êä³ö
+#include <conio.h> //è¾“å‡º
 #include <Windows.h>
 #include <mmsystem.h>
 #include <iostream>
@@ -9,21 +9,21 @@
 
 #pragma comment(lib,"winmm.lib")
 
-#define MAX_LEVEL 5//×î´ó¹Ø¿¨Êı
+#define MAX_LEVEL 5//æœ€å¤§å…³å¡æ•°
 
 // const int SPEED_NORMAL=500;//ms
 const int SPEED_NORMAL[5]={500,300,150,100,80};//ms
 const int SPEED_QUICK=50;//ms
 
 #define BLOCK_TYPE_I 1 //I
-#define BLOCK_TYPE_Z_1 2  //Z 1ĞÍ
-#define BLOCK_TYPE_Z_2 3  //Z 1ĞÍ
+#define BLOCK_TYPE_Z_1 2  //Z 1å‹
+#define BLOCK_TYPE_Z_2 3  //Z 1å‹
 #define BLOCK_TYPE_T 4  //T
 #define BLOCK_TYPE_L 5  //L
 #define BLOCK_TYPE_J 6  //J
-#define BLOCK_TYPE_Tian 7  //Ìï
+#define BLOCK_TYPE_Tian 7  //ç”°
 
-#define READFILE_PATH "./score.txt"//·ÖÊıÎÄ¼şÂ·¾¶
+#define READFILE_PATH "./score.txt"//åˆ†æ•°æ–‡ä»¶è·¯å¾„
 
 Tetris::Tetris(int rows,int cols,int left,int top,int blockSize)
 {
@@ -33,7 +33,7 @@ Tetris::Tetris(int rows,int cols,int left,int top,int blockSize)
 	m_nTopMargin=top;
 	m_nBlockSize=blockSize;
 
-	//³õÊ¼»¯ÓÎÏ·Êı¾İ
+	//åˆå§‹åŒ–æ¸¸æˆæ•°æ®
 	for(int i=0;i<rows;i++)
 	{
 		vector<int> mapRow;
@@ -52,22 +52,22 @@ Tetris::~Tetris()
 
 void Tetris::init()
 {
-	//±³¾°ÒôÀÖ
+	//èƒŒæ™¯éŸ³ä¹
 	mciSendString("play ./res/bg.mp3 repeat",0,0,0);
 	m_nDelay=SPEED_NORMAL[0];
 
-	//Ëæ»úÉú³ÉÖÖ×Ó
+	//éšæœºç”Ÿæˆç§å­
 	srand(time(NULL));
 
-	//´´½¨ÓÎÏ·´°¿Ú
+	//åˆ›å»ºæ¸¸æˆçª—å£
 	initgraph(938,896);
 
-	//¼ÓÔØ±³¾°Í¼Æ¬
+	//åŠ è½½èƒŒæ™¯å›¾ç‰‡
 	loadimage(&m_imgBg,"res/bg2.png");
 	loadimage(&m_imgBG_Win,"res/win.png");
 	loadimage(&m_imgBg_Over,"res/over.png");
 
-	//³õÊ¼»¯ÓÎÏ·ÖĞµÄÇøÓò
+	//åˆå§‹åŒ–æ¸¸æˆä¸­çš„åŒºåŸŸ
 	for(int i=0;i<m_nRows;i++)
 	{
 		for(int j=0;j<m_nCols;j++)
@@ -79,15 +79,15 @@ void Tetris::init()
 	m_nScore=0;
 	m_nLevel=1;
 	m_nClearLineCount=0;
-	m_nHighestScore=0;//Èç¹ûÎÄ¼şÖĞµÄÊı¾İÎª¿Õ£¬Ôò»¹ÊÇĞèÒª¸³Öµ0
+	m_nHighestScore=0;//å¦‚æœæ–‡ä»¶ä¸­çš„æ•°æ®ä¸ºç©ºï¼Œåˆ™è¿˜æ˜¯éœ€è¦èµ‹å€¼0
 
 	m_bGameOver=false;
 
-	//³õÊ¼»¯×î¸ß·Ö
+	//åˆå§‹åŒ–æœ€é«˜åˆ†
 	fstream file(READFILE_PATH);
 	if(!file.is_open())
 	{
-		cout<<READFILE_PATH<<"´ò¿ªÊ§°Ü£¡"<<endl;
+		cout<<READFILE_PATH<<"æ‰“å¼€å¤±è´¥ï¼"<<endl;
 		file.open(READFILE_PATH,ios::out);
 
 	}
@@ -99,10 +99,10 @@ void Tetris::init()
 
 void Tetris::play()
 {
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	init();
 
-	//µÚÒ»´ÎÃ»ÓĞ·½¿éÊ±£¬ÏÈÔ¤¸æ·½¿é
+	//ç¬¬ä¸€æ¬¡æ²¡æœ‰æ–¹å—æ—¶ï¼Œå…ˆé¢„å‘Šæ–¹å—
 	m_pNextBlock=new Block;
 	m_pCurrBlock=m_pNextBlock;
 
@@ -110,41 +110,41 @@ void Tetris::play()
 
 	int timer=0;
 
-	//ÓÎÏ·Ñ­»·
+	//æ¸¸æˆå¾ªç¯
 	while(1)
 	{
-		//½ÓÊÜÓÃ»§ÊäÈë£¨ÉÏÏÂ×óÓÒ¿ØÖÆ²Ù×÷£©
+		//æ¥å—ç”¨æˆ·è¾“å…¥ï¼ˆä¸Šä¸‹å·¦å³æ§åˆ¶æ“ä½œï¼‰
 		keyEvent();
 
-		//¶¨Ê±äÖÈ¾»­Ãæ
+		//å®šæ—¶æ¸²æŸ“ç”»é¢
 		timer+=getDelay();
 		if(timer>m_nDelay)
 		{
 			timer=0;
 
-			//ÏÂÂä
+			//ä¸‹è½
 			drop();
 
-			//äÖÈ¾ÓÎÏ·»­Ãæ
+			//æ¸²æŸ“æ¸¸æˆç”»é¢
 			m_bUpdate=true;
 		}
 
 		if(m_bUpdate)
 		{
 			m_bUpdate=false;
-			//¸üĞÂÓÎÏ·»­Ãæ
+			//æ›´æ–°æ¸¸æˆç”»é¢
 			updateWindow();
 
-			//¸üĞÂÓÎÏ·ĞÅÏ¢£¨ÇåĞĞ£©
+			//æ›´æ–°æ¸¸æˆä¿¡æ¯ï¼ˆæ¸…è¡Œï¼‰
 			clearLine();
 		}
 
 		if(m_bGameOver)
 		{
-			//ÓÎÏ·½áÊø£¬±£´æ·ÖÊı
+			//æ¸¸æˆç»“æŸï¼Œä¿å­˜åˆ†æ•°
 			saveScore();
 
-			//½áÊø½çÃæ
+			//ç»“æŸç•Œé¢
 			displayOver();
 
 			system("pause");
@@ -155,37 +155,37 @@ void Tetris::play()
 
 void Tetris::keyEvent()
 {
-	//¼ÇÂ¼°´ÏÂµÄ¼ü
+	//è®°å½•æŒ‰ä¸‹çš„é”®
 	unsigned char ch;
-	//ÊÇ·ñĞı×ª
+	//æ˜¯å¦æ—‹è½¬
 	bool bRotateFlag=false;
-	//×óÓÒÒÆ¶¯
+	//å·¦å³ç§»åŠ¨
 	int dx=0;
 
-	//ÅĞ¶ÏÊÇ·ñ°´ÏÂ¼üÅÌ
+	//åˆ¤æ–­æ˜¯å¦æŒ‰ä¸‹é”®ç›˜
 	if(_kbhit())
 	{
-		ch=_getch();//Êä³ö£¬Ãâ»Ø³µ
+		ch=_getch();//è¾“å‡ºï¼Œå…å›è½¦
 
 		if(ch==224)
 		{
-			ch=_getch();//·½Ïò¼ü»á·µ»ØÁ½¸ö×Ö·û£¬ËùÒÔĞèÒªÔÙÈ¡Ò»´Îch
+			ch=_getch();//æ–¹å‘é”®ä¼šè¿”å›ä¸¤ä¸ªå­—ç¬¦ï¼Œæ‰€ä»¥éœ€è¦å†å–ä¸€æ¬¡ch
 
 			switch(ch){
 			case 72:
-				//ÉÏ
+				//ä¸Š
 				bRotateFlag=true;
 				break;
 			case 80:
-				//ÏÂ 
+				//ä¸‹ 
 				m_nDelay=SPEED_QUICK;
 				break;
 			case 75:
-				//×ó
+				//å·¦
 				dx=-1;
 				break;
 			case 77:
-				//ÓÒ
+				//å³
 				dx=1;
 				break;  
 			default:
@@ -194,19 +194,19 @@ void Tetris::keyEvent()
 		}
 		else{
 			switch(ch){
-				//Èç¹ûÊÇWASD£¬Ò²¿ÉÒÔ×÷Îª·½Ïò¼ü
+				//å¦‚æœæ˜¯WASDï¼Œä¹Ÿå¯ä»¥ä½œä¸ºæ–¹å‘é”®
 			case 'w':
-				//ÉÏ
+				//ä¸Š
 				break;
 			case 's':
-				//ÏÂ 
+				//ä¸‹ 
 				break;
 			case 'a':
-				//×ó
+				//å·¦
 				dx=-1;
 				break;
 			case 'd':
-				//ÓÒ
+				//å³
 				dx=1;
 				break;
 			}
@@ -215,14 +215,14 @@ void Tetris::keyEvent()
 
 	if(bRotateFlag)
 	{
-		//Ğı×ª
+		//æ—‹è½¬
 		rotate();
 		m_bUpdate=true;
 	}
 
 	if(dx!=0)
 	{
-		//×óÓÒÒÆ¶¯
+		//å·¦å³ç§»åŠ¨
 		moveLeftRight(dx);
 		m_bUpdate=true;
 	}
@@ -230,17 +230,17 @@ void Tetris::keyEvent()
 
 void Tetris::updateWindow()
 {
-	//»æÖÆÓÎÏ·±³¾°Í¼Æ¬
+	//ç»˜åˆ¶æ¸¸æˆèƒŒæ™¯å›¾ç‰‡
 	putimage(0,0,&m_imgBg);
 
-	//²âÊÔ·½¿é
+	//æµ‹è¯•æ–¹å—
 	// 	Block block;
 	// 	block.draw(m_nLeftMargin,m_nTopMargin);
 
 	IMAGE** imgs=Block::getImages();
 
-	//Ö´ĞĞºó£¬ÈÎºÎ»æÍ¼²Ù×÷¶¼½«ÔİÊ±²»Êä³öµ½»æÍ¼´°¿ÚÉÏ
-	//Ö±µ½Ö´ĞĞ FlushBatchDraw »ò EndBatchDraw ²Å½«Ö®Ç°µÄ»æÍ¼Êä³ö
+	//æ‰§è¡Œåï¼Œä»»ä½•ç»˜å›¾æ“ä½œéƒ½å°†æš‚æ—¶ä¸è¾“å‡ºåˆ°ç»˜å›¾çª—å£ä¸Š
+	//ç›´åˆ°æ‰§è¡Œ FlushBatchDraw æˆ– EndBatchDraw æ‰å°†ä¹‹å‰çš„ç»˜å›¾è¾“å‡º
 	BeginBatchDraw();
 
 	for(int i=0;i<m_nRows;i++)
@@ -259,7 +259,7 @@ void Tetris::updateWindow()
 	m_pCurrBlock->draw(m_nLeftMargin,m_nTopMargin);
 	m_pNextBlock->draw(689,150);
 
-	drawScore();//»æÖÆ·ÖÊı
+	drawScore();//ç»˜åˆ¶åˆ†æ•°
 
 	EndBatchDraw();
 }
@@ -285,22 +285,22 @@ int Tetris::getDelay()
 
 void Tetris::drop()
 {
-	//ÏÂ½µ
+	//ä¸‹é™
 	m_bakBlock=*m_pCurrBlock;
 	m_pCurrBlock->drop();
 
-	//¹Ì»¯
+	//å›ºåŒ–
 	if(!m_pCurrBlock->blockInMap(m_mapData))
 	{
 		*m_pCurrBlock=m_bakBlock;
 		m_pCurrBlock->solidify(m_mapData);
 
-		//¹Ì»¯·½¿é²»ÔÙÊ¹ÓÃ
+		//å›ºåŒ–æ–¹å—ä¸å†ä½¿ç”¨
 		delete m_pCurrBlock;
 		m_pCurrBlock=m_pNextBlock;
 		m_pNextBlock=new Block;
 
-		//¼ì²éÊÇ·ñµ½¶¥£¬½áÊøÓÎÏ·
+		//æ£€æŸ¥æ˜¯å¦åˆ°é¡¶ï¼Œç»“æŸæ¸¸æˆ
 		checkOver();
 	}
 
@@ -309,43 +309,43 @@ void Tetris::drop()
 
 void Tetris::clearLine()
 {
-	int nLines=0;//¼ÇÂ¼±»Çå³ıµÄĞĞÊı
+	int nLines=0;//è®°å½•è¢«æ¸…é™¤çš„è¡Œæ•°
 
-	int k=m_nRows-1;//´æ´¢Êı¾İµÄĞĞÊı Èç¹û¸ÃĞĞÂú£¬ÔòÉ¾³ı£¬kÈÔÈ»Ö¸Ïò×îºóÒ»ĞĞ
-	for(int i=m_nRows-1;i>=0;i--)//´Ó×îºóÒ»ĞĞÉ¨Ãè
+	int k=m_nRows-1;//å­˜å‚¨æ•°æ®çš„è¡Œæ•° å¦‚æœè¯¥è¡Œæ»¡ï¼Œåˆ™åˆ é™¤ï¼Œkä»ç„¶æŒ‡å‘æœ€åä¸€è¡Œ
+	for(int i=m_nRows-1;i>=0;i--)//ä»æœ€åä¸€è¡Œæ‰«æ
 	{
-		//¼ì²éµÚiĞĞÊÇ·ñÂúÁË
+		//æ£€æŸ¥ç¬¬iè¡Œæ˜¯å¦æ»¡äº†
 		int count=0;
 		for(int j=0;j<m_nCols;j++)
 		{
-			if(m_mapData[i][j])//Ò»¸öÒ»¸öÉ¨Ãè¹ıÈ¥£¬²»Îª0Ôò±íÊ¾ÓĞÊı¾İ
+			if(m_mapData[i][j])//ä¸€ä¸ªä¸€ä¸ªæ‰«æè¿‡å»ï¼Œä¸ä¸º0åˆ™è¡¨ç¤ºæœ‰æ•°æ®
 			{
 				count++;
 			}
-			m_mapData[k][j]=m_mapData[i][j];//Ò»±ßÉ¨ÃèÒ»±ß´æ´¢
+			m_mapData[k][j]=m_mapData[i][j];//ä¸€è¾¹æ‰«æä¸€è¾¹å­˜å‚¨
 		}
 
-		//Ò»ĞĞÉ¨Ãè½áÊø£¬count²»µÈÓÚm_nCols£¬Ôò±íÊ¾Ã»ÓĞÂúĞĞ£»·´Ö®£¬ÂúĞĞ
-		if(count<m_nCols)//²»ÊÇÂúĞĞ
+		//ä¸€è¡Œæ‰«æç»“æŸï¼Œcountä¸ç­‰äºm_nColsï¼Œåˆ™è¡¨ç¤ºæ²¡æœ‰æ»¡è¡Œï¼›åä¹‹ï¼Œæ»¡è¡Œ
+		if(count<m_nCols)//ä¸æ˜¯æ»¡è¡Œ
 		{
-			k--;//ÒòÎª¸ÃĞĞÃ»ÓĞÂú£¬ËùÒÔÈÔÈ»´æ´¢¸ÃĞĞ
+			k--;//å› ä¸ºè¯¥è¡Œæ²¡æœ‰æ»¡ï¼Œæ‰€ä»¥ä»ç„¶å­˜å‚¨è¯¥è¡Œ
 		}
 		else{
 			nLines++;
 
-			//½âÊÍ£º
-			//ÒòÎªÂúĞĞÁË£¬ĞèÒªÏû³ı¸ÃĞĞ,ËùÒÔk²»±ä£¬ÈÔÈ»Ö¸Ïò¸ÃĞĞ
-			//ÏÂÒ»´ÎÖ´ĞĞm_mapData[k][j]=m_mapData[i][j];»á±»¸²¸Ç
+			//è§£é‡Šï¼š
+			//å› ä¸ºæ»¡è¡Œäº†ï¼Œéœ€è¦æ¶ˆé™¤è¯¥è¡Œ,æ‰€ä»¥kä¸å˜ï¼Œä»ç„¶æŒ‡å‘è¯¥è¡Œ
+			//ä¸‹ä¸€æ¬¡æ‰§è¡Œm_mapData[k][j]=m_mapData[i][j];ä¼šè¢«è¦†ç›–
 		}
 	}
 
 	if(nLines>0)
 	{
-		//Ïû³ıÒ»ĞĞ¶¯»­
+		//æ¶ˆé™¤ä¸€è¡ŒåŠ¨ç”»
 		mciSendString("play res/xiaochu1.mp3",0,0,0);
 		 m_bUpdate=true;
 
-		//µÃ·Ö
+		//å¾—åˆ†
 		 int addScore[4]={10,30,60,80};
 		 m_nScore+=addScore[nLines-1];
 		 if(m_nScore>m_nHighestScore)
@@ -353,12 +353,12 @@ void Tetris::clearLine()
 			 m_nHighestScore=m_nScore;
 		 }
 
-		 //¹Ø¿¨
-		 //Ã¿100·ÖÎªÒ»¸ö¼¶±ğ£¬1-100 µÚÒ»¹Ø 101-200 µÚ¶ş¹Ø ...
+		 //å…³å¡
+		 //æ¯100åˆ†ä¸ºä¸€ä¸ªçº§åˆ«ï¼Œ1-100 ç¬¬ä¸€å…³ 101-200 ç¬¬äºŒå…³ ...
 		 m_nLevel=(m_nScore+99)/100;
 		 if(m_nLevel)
 
-		 //Ïû³ıĞĞÊı
+		 //æ¶ˆé™¤è¡Œæ•°
 		 m_nClearLineCount+=nLines;
 	}
 }
@@ -376,7 +376,7 @@ void Tetris::moveLeftRight(int offset)
 
 void Tetris::rotate()
 {
-	//Ìï×Ö·½¿éĞı×ªÃ»ÓĞÒâÒå£¬Ö±½Óreturn
+	//ç”°å­—æ–¹å—æ—‹è½¬æ²¡æœ‰æ„ä¹‰ï¼Œç›´æ¥return
 	if(m_pCurrBlock->getBlockType()==BLOCK_TYPE_Tian)
 	{
 		return;
@@ -392,42 +392,42 @@ void Tetris::rotate()
 
 void Tetris::drawScore()
 {
-	//ÓÃµ½ÁËEasyXº¯Êı£¬¾ßÌå²é¿´°ïÖúÊÖ²á
+	//ç”¨åˆ°äº†EasyXå‡½æ•°ï¼Œå…·ä½“æŸ¥çœ‹å¸®åŠ©æ‰‹å†Œ
 	char ShowText[32];
 
-	//·ÖÊı
+	//åˆ†æ•°
 	sprintf_s(ShowText,sizeof(ShowText),"%d",m_nScore);
 	setcolor(RGB(180,180,180));
 
 	LOGFONT f;
-	gettextstyle(&f);//»ñÈ¡µ±Ç°×ÖÌå
+	gettextstyle(&f);//è·å–å½“å‰å­—ä½“
 	f.lfHeight=60;
 	f.lfWidth=30;
-	f.lfQuality = ANTIALIASED_QUALITY;//¿¹¾â³İ
+	f.lfQuality = ANTIALIASED_QUALITY;//æŠ—é”¯é½¿
 	_tcscpy_s(f.lfFaceName,sizeof(f.lfFaceName),_T("Segoe UI Black"));
 	settextstyle(&f);
 
-	setbkmode(TRANSPARENT);//×ÖÌå±³¾°ÉèÖÃÎªÍ¸Ã÷
+	setbkmode(TRANSPARENT);//å­—ä½“èƒŒæ™¯è®¾ç½®ä¸ºé€æ˜
 
 	outtextxy(670,727,ShowText);
 
-	//µÈ¼¶
+	//ç­‰çº§
 	sprintf_s(ShowText,sizeof(ShowText),"%d",m_nLevel);
 	gettextstyle(&f);
-	//±£Ö¤ÓÒ¶ÔÆë£¬¿í¶È*Î»ÊıµÃµ½µÚÒ»Î»µÄÎ»ÖÃ
+	//ä¿è¯å³å¯¹é½ï¼Œå®½åº¦*ä½æ•°å¾—åˆ°ç¬¬ä¸€ä½çš„ä½ç½®
 	int xPos=224-f.lfWidth*strlen(ShowText);
-	//äÖÈ¾
+	//æ¸²æŸ“
 	outtextxy(xPos,727,ShowText);
 
-	//Ïû³ıĞĞÊı
+	//æ¶ˆé™¤è¡Œæ•°
 	sprintf_s(ShowText,sizeof(ShowText),"%d",m_nClearLineCount);
 	gettextstyle(&f);
-	//±£Ö¤ÓÒ¶ÔÆë£¬¿í¶È*Î»ÊıµÃµ½µÚÒ»Î»µÄÎ»ÖÃ
+	//ä¿è¯å³å¯¹é½ï¼Œå®½åº¦*ä½æ•°å¾—åˆ°ç¬¬ä¸€ä½çš„ä½ç½®
 	xPos=224-f.lfWidth*strlen(ShowText);
-	//äÖÈ¾
+	//æ¸²æŸ“
 	outtextxy(xPos,825,ShowText);
 
-	//×î¸ß·Ö
+	//æœ€é«˜åˆ†
 	sprintf_s(ShowText,sizeof(ShowText),"%d",m_nHighestScore);
 	outtextxy(670,825,ShowText);
 }
@@ -451,7 +451,7 @@ void Tetris::saveScore()
 
 void Tetris::displayOver()
 {
-	//±³¾°ÒôÀÖÍ£Ö¹
+	//èƒŒæ™¯éŸ³ä¹åœæ­¢
 	mciSendString("stop ./res/bg.mp3",0,0,0);
 	if(m_nLevel>=MAX_LEVEL)
 	{

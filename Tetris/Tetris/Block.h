@@ -1,43 +1,43 @@
 #pragma once
-#include <graphics.h>		// ÒıÓÃÍ¼ĞÎ¿âÍ·ÎÄ¼ş
+#include <graphics.h>		// å¼•ç”¨å›¾å½¢åº“å¤´æ–‡ä»¶
 #include <vector>
 
 using namespace std;
 
-//Î»ÖÃ½á¹¹Ìå£¬¼ÇÂ¼·½¿éµÄµÄÎ»ÖÃ
+//ä½ç½®ç»“æ„ä½“ï¼Œè®°å½•æ–¹å—çš„çš„ä½ç½®
 struct Point{
 	int row;
 	int col;
 };
 
-//·½¿éÀà
+//æ–¹å—ç±»
 class Block
 {
 public:
 	Block();
 	~Block();
 
-	void drop();//ÏÂÂä
-	void moveLeftRight(int offset);//×óÓÒÒÆ¶¯£¬Í¨¹ıÆ«ÒÆÁ¿¿ØÖÆ offset>0 ÓÒÒÆ;offset<0 ×óÒÆ
-	void rotate();//Ğı×ª
-	void draw(int leftMargin,int topMargin);//»­³ö·½¿é£¬Í¨¹ıÉèÖÃ±ß¾àÖµ¶¨Î»»­³öÎ»ÖÃ
+	void drop();//ä¸‹è½
+	void moveLeftRight(int offset);//å·¦å³ç§»åŠ¨ï¼Œé€šè¿‡åç§»é‡æ§åˆ¶ offset>0 å³ç§»;offset<0 å·¦ç§»
+	void rotate();//æ—‹è½¬
+	void draw(int leftMargin,int topMargin);//ç”»å‡ºæ–¹å—ï¼Œé€šè¿‡è®¾ç½®è¾¹è·å€¼å®šä½ç”»å‡ºä½ç½®
 
-	//int a[3] =>»ñÈ¡ int* getdata();
-	//int* a[3] =>»ñÈ¡ int** getdata();
+	//int a[3] =>è·å– int* getdata();
+	//int* a[3] =>è·å– int** getdata();
 	static IMAGE** getImages();
 
 	Block& operator=(const Block& other);
 
-	//ÅĞ¶Ï·½¿éÊÇ·ñÔÚµØÍ¼ÄÚ
+	//åˆ¤æ–­æ–¹å—æ˜¯å¦åœ¨åœ°å›¾å†…
 	bool blockInMap(const vector<vector<int>>&map);
 
-	//¹Ì»¯·½¿é£¬Ê¹·½¿é²»ÔÙÏÂÂä
+	//å›ºåŒ–æ–¹å—ï¼Œä½¿æ–¹å—ä¸å†ä¸‹è½
 	void solidify(vector<vector<int>>&map);
 	int getBlockType();
 
 private:
-	int m_nBlockType;//·½¿éÀàĞÍ
-	Point m_PointBlocks[4];//Ã¿ËÄ¸ö·½¿é¹¹³ÉÒ»¸ö¶íÂŞË¹·½¿é£¬Ê¹ÓÃÊı×é¼ÇÂ¼Ä³ÖÖÀàĞÍµÄ·½¿éÖĞ¸÷¸ö·½¿éµÄÎ»ÖÃ
+	int m_nBlockType;//æ–¹å—ç±»å‹
+	Point m_PointBlocks[4];//æ¯å››ä¸ªæ–¹å—æ„æˆä¸€ä¸ªä¿„ç½—æ–¯æ–¹å—ï¼Œä½¿ç”¨æ•°ç»„è®°å½•æŸç§ç±»å‹çš„æ–¹å—ä¸­å„ä¸ªæ–¹å—çš„ä½ç½®
 	IMAGE *m_img;
 
 	static IMAGE* m_imgs[7];

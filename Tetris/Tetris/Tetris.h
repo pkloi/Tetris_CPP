@@ -6,64 +6,64 @@
 
 using namespace std;
 
-//ÓÎÏ·Àà
+//æ¸¸æˆç±»
 class Tetris
 {
 public:
-	//¹¹Ôìº¯Êı
-	//ÓÎÏ·ÇøÓòµÄ²ÎÊı£ºrows-ĞĞ;cols-ÁĞ;left-ÓÎÏ·ÇøÓòÀë×ó±ß¿òµÄ¾àÀë;top-·½¿é´Ó¶¥²¿µôÂäµÄ¾àÀë;blockSize-·½¿é´óĞ¡
+	//æ„é€ å‡½æ•°
+	//æ¸¸æˆåŒºåŸŸçš„å‚æ•°ï¼šrows-è¡Œ;cols-åˆ—;left-æ¸¸æˆåŒºåŸŸç¦»å·¦è¾¹æ¡†çš„è·ç¦»;top-æ–¹å—ä»é¡¶éƒ¨æ‰è½çš„è·ç¦»;blockSize-æ–¹å—å¤§å°
 	Tetris(int rows,int cols,int left,int top,int blockSize);
 	~Tetris();
 
-	void init();//³õÊ¼»¯
-	void play();//¿ªÊ¼ÓÎÏ·
+	void init();//åˆå§‹åŒ–
+	void play();//å¼€å§‹æ¸¸æˆ
 
 private:
-	void keyEvent();//¼üÅÌÊäÈëÊÂ¼ş
-	void updateWindow();//äÖÈ¾ÓÎÏ·½çÃæ
+	void keyEvent();//é”®ç›˜è¾“å…¥äº‹ä»¶
+	void updateWindow();//æ¸²æŸ“æ¸¸æˆç•Œé¢
 
-	//µÚÒ»µ÷ÓÃ·µ»Ø0
-	int getDelay();//·µ»Ø¾àÀëÉÏÒ»´Îµ÷ÓÃ¸Ãº¯Êı£¬¼ä¸ôÁË¶àÉÙÊ±¼ä£¨ms£©
-	void drop();//ÏÂÂä
-	void clearLine();//ÇåĞĞ
-	void moveLeftRight(int offset);//×óÓÒÒÆ¶¯
-	void rotate();//Ğı×ª
-	void drawScore();//»æÖÆ·ÖÊı
-	void checkOver();//ÓÎÏ·½áÊø
+	//ç¬¬ä¸€è°ƒç”¨è¿”å›0
+	int getDelay();//è¿”å›è·ç¦»ä¸Šä¸€æ¬¡è°ƒç”¨è¯¥å‡½æ•°ï¼Œé—´éš”äº†å¤šå°‘æ—¶é—´ï¼ˆmsï¼‰
+	void drop();//ä¸‹è½
+	void clearLine();//æ¸…è¡Œ
+	void moveLeftRight(int offset);//å·¦å³ç§»åŠ¨
+	void rotate();//æ—‹è½¬
+	void drawScore();//ç»˜åˆ¶åˆ†æ•°
+	void checkOver();//æ¸¸æˆç»“æŸ
 
-	void saveScore();//±£´æ·ÖÊı
-	void displayOver();//äÖÈ¾½áÊø½çÃæ
+	void saveScore();//ä¿å­˜åˆ†æ•°
+	void displayOver();//æ¸²æŸ“ç»“æŸç•Œé¢
 
 private:
-	int m_nDelay;//Ë¢ĞÂÊ±¼ä
-	bool m_bUpdate;//ÊÇ·ñË¢ĞÂÓÎÏ·½çÃæ
+	int m_nDelay;//åˆ·æ–°æ—¶é—´
+	bool m_bUpdate;//æ˜¯å¦åˆ·æ–°æ¸¸æˆç•Œé¢
 
-	int m_nScore;//µÃ·Ö
-	int m_nLevel;//µ±Ç°¹Ø¿¨
-	int m_nClearLineCount;//Ïû³ıµÄĞĞÊı
-	int m_nHighestScore;//×î¸ß·Ö
+	int m_nScore;//å¾—åˆ†
+	int m_nLevel;//å½“å‰å…³å¡
+	int m_nClearLineCount;//æ¶ˆé™¤çš„è¡Œæ•°
+	int m_nHighestScore;//æœ€é«˜åˆ†
 
-	bool m_bGameOver;//ÓÎÏ·½áÊø
+	bool m_bGameOver;//æ¸¸æˆç»“æŸ
 
-	//0£º¿Õ°×£¬Ã»ÓĞÈÎºÎ·½¿é
-	//5£º±íÊ¾µÚ5ÖÖ¶íÂŞË¹·½¿é£¨Ò»¹²ÆßÖÖ£©
-	vector<vector<int>> m_mapData;//´æÓÎÏ·Êı¾İ µØÍ¼µÄ»®·Ö ĞĞ ÁĞ
+	//0ï¼šç©ºç™½ï¼Œæ²¡æœ‰ä»»ä½•æ–¹å—
+	//5ï¼šè¡¨ç¤ºç¬¬5ç§ä¿„ç½—æ–¯æ–¹å—ï¼ˆä¸€å…±ä¸ƒç§ï¼‰
+	vector<vector<int>> m_mapData;//å­˜æ¸¸æˆæ•°æ® åœ°å›¾çš„åˆ’åˆ† è¡Œ åˆ—
 	
-	int m_nRows;//ĞĞ
-	int m_nCols;//ÁĞ
+	int m_nRows;//è¡Œ
+	int m_nCols;//åˆ—
 
 	int m_nLeftMargin;
 	int m_nTopMargin;
 
-	int m_nBlockSize;//¶íÂŞË¹·½¿éµÄ´óĞ¡
+	int m_nBlockSize;//ä¿„ç½—æ–¯æ–¹å—çš„å¤§å°
 
-	IMAGE m_imgBg;//±³¾°Í¼Æ¬
-	IMAGE m_imgBG_Win;//Ê¤Àû±³¾°
-	IMAGE m_imgBg_Over;//Ê§°Ü±³¾°
+	IMAGE m_imgBg;//èƒŒæ™¯å›¾ç‰‡
+	IMAGE m_imgBG_Win;//èƒœåˆ©èƒŒæ™¯
+	IMAGE m_imgBg_Over;//å¤±è´¥èƒŒæ™¯
 
-	Block* m_pCurrBlock;//µ±Ç°·½¿é
-	Block* m_pNextBlock;//Ô¤¸æ·½¿é
+	Block* m_pCurrBlock;//å½“å‰æ–¹å—
+	Block* m_pNextBlock;//é¢„å‘Šæ–¹å—
 
-	Block m_bakBlock;//µ±Ç°·½¿é½µÂä¹ı³ÌÖĞ£¬ÓÃÀ´±¸·İÉÏÒ»¸öºÏ·¨Î»ÖÃ
+	Block m_bakBlock;//å½“å‰æ–¹å—é™è½è¿‡ç¨‹ä¸­ï¼Œç”¨æ¥å¤‡ä»½ä¸Šä¸€ä¸ªåˆæ³•ä½ç½®
 };
 
